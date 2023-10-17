@@ -1,0 +1,62 @@
+openapi: 3.0.3
+info:
+  title: Echo Rest API
+  description: A sample REST API
+  termsOfService: https://example.com/terms-of-service
+  license:
+    name: TODO
+    url: TODO
+  version: 1.0.0
+  contact:
+    name: Anuj Parihar
+    url: https://github.com/BearTS
+    email: anujparihar@yahoo.com
+servers:
+  - url: http://localhost:8080
+    description: Local development server
+paths:
+  '/user/signup':
+    post:
+      summary: User Signup
+      operationId: Signup
+      description: Use this endpoint to sign up a user.
+      requestBody:
+        description: User Signup Request
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
+      responses:
+        '200':
+          description: Signup response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SignupResponse'
+              examples:
+                success:
+                  summary: Successful Signup Response
+                  value:
+                    message: User signed up successfully.
+                error:
+                  summary: Error Signup Response
+                  value:
+                    message: Signup failed. Please check your input.
+components:
+  schemas:
+    SignupRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          example: user@example.com
+        password:
+          type: string
+          example: password123
+    SignupResponse:
+      type: object
+      properties:
+        message:
+          type: string

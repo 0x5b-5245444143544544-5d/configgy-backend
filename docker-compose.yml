@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  message-broker:
+    container_name: rabbitmq-container
+    image: rabbitmq:latest
+    hostname: rabbit-go
+    ports:
+      - "5672:5672"
+    environment:
+      - RABBITMQ_DEFAULT_USER=root
+      - RABBITMQ_DEFAULT_PASS=root
