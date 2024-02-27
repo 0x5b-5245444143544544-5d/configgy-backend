@@ -253,6 +253,14 @@ type TOTP struct {
 	TotpSecret []byte `json:"totp_secret"`
 }
 
+// Vault defines model for Vault.
+type Vault struct {
+	Description *string `json:"description,omitempty"`
+	Name        string  `json:"name"`
+	Pid         string  `json:"pid"`
+	PublicKey   string  `json:"public_key"`
+}
+
 // VaultCreateRequest defines model for VaultCreateRequest.
 type VaultCreateRequest struct {
 	Description string `json:"description"`
@@ -266,6 +274,9 @@ type VaultEditRequest struct {
 	Name        *string `json:"name,omitempty"`
 	PublicKey   *string `json:"public_key,omitempty"`
 }
+
+// VaultListResponse defines model for VaultListResponse.
+type VaultListResponse = []Vault
 
 // CredentialFeatureFlagAddJSONBody defines parameters for CredentialFeatureFlagAdd.
 type CredentialFeatureFlagAddJSONBody struct {
@@ -426,6 +437,9 @@ type ServerInterface interface {
 	// Edit a vault
 	// (POST /vault/edit/{pid})
 	VaultEdit(ctx echo.Context, pid string) error
+	// Get all vaults
+	// (GET /vault/list)
+	VaultList(ctx echo.Context) error
 	// Get a vault by id
 	// (GET /vault/{pid})
 	VaultGet(ctx echo.Context, pid string) error
@@ -931,6 +945,17 @@ func (w *ServerInterfaceWrapper) VaultEdit(ctx echo.Context) error {
 	return err
 }
 
+// VaultList converts echo context to params.
+func (w *ServerInterfaceWrapper) VaultList(ctx echo.Context) error {
+	var err error
+
+	ctx.Set(UserJWTScopes, []string{})
+
+	// Invoke the callback with all the unmarshaled arguments
+	err = w.Handler.VaultList(ctx)
+	return err
+}
+
 // VaultGet converts echo context to params.
 func (w *ServerInterfaceWrapper) VaultGet(ctx echo.Context) error {
 	var err error
@@ -1007,6 +1032,7 @@ func RegisterHandlersWithBaseURL(router EchoRouter, si ServerInterface, baseURL 
 	router.POST(baseURL+"/vault/create", wrapper.VaultCreate)
 	router.DELETE(baseURL+"/vault/delete/:pid", wrapper.VaultDelete)
 	router.POST(baseURL+"/vault/edit/:pid", wrapper.VaultEdit)
+	router.GET(baseURL+"/vault/list", wrapper.VaultList)
 	router.GET(baseURL+"/vault/:pid", wrapper.VaultGet)
 
 }

@@ -163,3 +163,29 @@ func (db *DB) GetVaultIDForCredential(credentialID int) (*VaultCredentials, erro
 	}
 	return &vaultCredentials, nil
 }
+
+func (db *DB) GetVaultsForUser(userPID string) ([]Vault, error) {
+	var vaults []Vault
+	var permissionAssignments []*PermissionAssignments
+	err := db.gormDB.Where("resource_type = ? AND identity_pid = ?", VaultResource, userPID).Find(&permissionAssignments).Error
+	if err != nil {
+		return nil, err
+	}
+
+	// empty struct is a zero size structure, so we can safely use it as a dummy value field in a map
+	vaultIDList := make(map[int]struct{})
+
+	for _, permissionAssignment := range permissionAssignments {
+		_, ok := vaultIDList[permissionAssignment.VaultID]
+		if !ok {
+			vault, err := db.GetVaultByID(permissionAssignment.VaultID)
+			if err != nil {
+				return nil, err
+			}
+			vaults = append(vaults, *vault)
+			vaultIDList[permissionAssignment.VaultID] = struct{}{}
+		}
+	}
+
+	return vaults, nil
+}

@@ -35,6 +35,8 @@ type VaultDb interface {
 	CreateVaultCredential(vault_credential *tables.VaultCredentials) error
 	GetVaultCredentialByID(id int) (*tables.VaultCredentials, error)
 	GetUserByPID(pid string) (*tables.Users, error)
+
+	GetVaultsForUser(userPID string) ([]tables.Vault, error)
 }
 
 type MessageBroker interface {

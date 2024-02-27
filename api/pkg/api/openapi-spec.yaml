@@ -250,6 +250,29 @@ paths:
                   summary: Vault Deletion Failure Response
                   value:
                     message: Vault could not be deleted.
+  "/vault/list":
+    get:
+      summary: Get all vaults
+      operationId: VaultList
+      description: Use this endpoint to get all vaults
+      security:
+        - UserJWT: []
+      responses:
+        "200":
+          description: Vault List Response
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/VaultListResponse"
+              examples:
+                success:
+                  summary: Successful Vault List Response
+                  value:
+                    message: Vaults were fetched successfully.
+                error:
+                  summary: Vault List Failure Response
+                  value:
+                    message: Vaults could not be fetched.
 
   ##############################
   #### CREDENTIAL ENDPOINTS ####
@@ -1152,6 +1175,30 @@ components:
           example: Some Vault Description
         public_key:
           type: string
+
+    VaultListResponse:
+      type: array
+      items:
+        $ref: "#/components/schemas/Vault"
+
+    Vault:
+      type: object
+      required:
+        - name
+        - public_key
+        - pid
+      properties:
+        name:
+          type: string
+          example: Some Vault Name
+        description:
+          type: string
+          example: Some Vault Description
+        public_key:
+          type: string
+        pid:
+          type: string
+          example: vault_a5009e28-e59e-4033-8c55-82ddc780fcae
 
     CredentialCreateRequest:
       type: object

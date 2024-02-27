@@ -12,6 +12,7 @@ type VaultService interface {
 	VaultGet(c context.Context, vaultPID string, userPID string) (VaultCreateRequest, int, error)
 	VaultEdit(c context.Context, vaultPID string, req VaultEditRequest, userPID string) (GenericMessageResponse, int, error)
 	VaultDelete(c context.Context, vaultPID string, userPID string) (GenericMessageResponse, int, error)
+	VaultList(c context.Context, userPID string) (VaultListResponse, int, error)
 }
 
 // VaultCreate - VaultCreate
@@ -101,6 +102,25 @@ func (svc *Service) VaultGet(c echo.Context, vaultPID string) error {
 		return echo.NewHTTPError(httpCode, "Failed to get vault")
 	}
 	svc.logger.Info("Vault Get request received")
+
+	// Return a response (e.g., a success message)
+	return c.JSON(http.StatusOK, response)
+}
+
+// VaultList - VaultList
+// (GET /vault/list)
+
+func (svc *Service) VaultList(c echo.Context) error {
+	userPID, err := getUserPIDFromAuthToken(c)
+	if err != nil {
+		svc.logger.Error("Failed to get user PID from auth token:", err)
+		return echo.NewHTTPError(http.StatusUnauthorized, "Invalid authorization header")
+	}
+	response, httpCode, err := svc.Services.VaultSvc.VaultList(c.Request().Context(), userPID)
+	if err != nil {
+		svc.logger.Error("Failed to get vault list:", err)
+		return echo.NewHTTPError(httpCode, "Failed to get vault list")
+	}
 
 	// Return a response (e.g., a success message)
 	return c.JSON(http.StatusOK, response)
