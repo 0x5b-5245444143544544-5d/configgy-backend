@@ -9,7 +9,7 @@ import (
 
 type VaultService interface {
 	VaultCreate(c context.Context, req VaultCreateRequest, userPID string) (GenericMessageResponse, int, error)
-	VaultGet(c context.Context, vaultPID string, userPID string) (VaultCreateRequest, int, error)
+	VaultGet(c context.Context, vaultPID string, userPID string) (VaultWithCredentials, int, error)
 	VaultEdit(c context.Context, vaultPID string, req VaultEditRequest, userPID string) (GenericMessageResponse, int, error)
 	VaultDelete(c context.Context, vaultPID string, userPID string) (GenericMessageResponse, int, error)
 	VaultList(c context.Context, userPID string) (VaultListResponse, int, error)

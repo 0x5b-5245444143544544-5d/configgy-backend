@@ -74,7 +74,7 @@ func (svc *AuthzSvcImpl) AuthzCreate(ctx context.Context, req api.AuthzCreateReq
 				}
 				credCreationReq := api.CredentialCreateRequest{
 					Name:           authz.ResourcePid,
-					CredentialType: api.File,
+					CredentialType: api.CredentialCreateRequestCredentialTypeFile,
 					File: &api.FileCredential{
 						File: []byte(keySet.EncryptedKey),
 						Name: "Encrypted key for " + authz.ResourcePid,

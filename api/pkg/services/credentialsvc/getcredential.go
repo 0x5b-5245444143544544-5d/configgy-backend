@@ -45,7 +45,7 @@ func (svc *CredentialServiceImpl) CredentialGet(c context.Context, credentialPID
 			}
 		}
 		return api.CredentialCreateRequest{
-			CredentialType: api.Password,
+			CredentialType: api.CredentialCreateRequestCredentialTypePassword,
 			Password: &api.PasswordCredential{
 				ExpiresAt:        &passwordData.ExpiresAt,
 				Password:         decryptedPassword,
@@ -80,7 +80,7 @@ func (svc *CredentialServiceImpl) CredentialGet(c context.Context, credentialPID
 			return api.CredentialCreateRequest{}, 0, err
 		}
 		return api.CredentialCreateRequest{
-			CredentialType: api.File,
+			CredentialType: api.CredentialCreateRequestCredentialTypeFile,
 			File: &api.FileCredential{
 				File: decryptedFileBytes,
 			},
@@ -106,7 +106,7 @@ func (svc *CredentialServiceImpl) CredentialGet(c context.Context, credentialPID
 			})
 		}
 		return api.CredentialCreateRequest{
-			CredentialType: api.FeatureFlags,
+			CredentialType: api.CredentialCreateRequestCredentialTypeFeatureFlags,
 			Name:           credential.CredentialName,
 			Notes:          &credential.Notes,
 			FeatureFlags: &api.FeatureFlagCredential{

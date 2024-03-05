@@ -34,6 +34,7 @@ type VaultDb interface {
 	GetVaultByPID(pid string) (*tables.Vault, error)
 	CreateVaultCredential(vault_credential *tables.VaultCredentials) error
 	GetVaultCredentialByID(id int) (*tables.VaultCredentials, error)
+	GetCredentialsForVault(vaultID int) ([]*tables.Credential, error)
 	GetUserByPID(pid string) (*tables.Users, error)
 
 	GetVaultsForUser(userPID string) ([]tables.Vault, error)

@@ -40,9 +40,16 @@ const (
 
 // Defines values for CredentialCreateRequestCredentialType.
 const (
-	FeatureFlags CredentialCreateRequestCredentialType = "feature_flags"
-	File         CredentialCreateRequestCredentialType = "file"
-	Password     CredentialCreateRequestCredentialType = "password"
+	CredentialCreateRequestCredentialTypeFeatureFlags CredentialCreateRequestCredentialType = "feature_flags"
+	CredentialCreateRequestCredentialTypeFile         CredentialCreateRequestCredentialType = "file"
+	CredentialCreateRequestCredentialTypePassword     CredentialCreateRequestCredentialType = "password"
+)
+
+// Defines values for CredentialStubCredentialType.
+const (
+	CredentialStubCredentialTypeFeatureFlags CredentialStubCredentialType = "feature_flags"
+	CredentialStubCredentialTypeFile         CredentialStubCredentialType = "file"
+	CredentialStubCredentialTypePassword     CredentialStubCredentialType = "password"
 )
 
 // Defines values for GroupAddRequestGroupRole.
@@ -129,6 +136,16 @@ type CredentialCreateRequest struct {
 
 // CredentialCreateRequestCredentialType defines model for CredentialCreateRequest.CredentialType.
 type CredentialCreateRequestCredentialType string
+
+// CredentialStub defines model for CredentialStub.
+type CredentialStub struct {
+	CredentialType CredentialStubCredentialType `json:"credential_type"`
+	Name           string                       `json:"name"`
+	Pid            string                       `json:"pid"`
+}
+
+// CredentialStubCredentialType defines model for CredentialStub.CredentialType.
+type CredentialStubCredentialType string
 
 // FeatureFlag defines model for FeatureFlag.
 type FeatureFlag struct {
@@ -277,6 +294,15 @@ type VaultEditRequest struct {
 
 // VaultListResponse defines model for VaultListResponse.
 type VaultListResponse = []Vault
+
+// VaultWithCredentials defines model for VaultWithCredentials.
+type VaultWithCredentials struct {
+	Credentials []CredentialStub `json:"credentials"`
+	Description *string          `json:"description,omitempty"`
+	Name        string           `json:"name"`
+	Pid         string           `json:"pid"`
+	PublicKey   string           `json:"public_key"`
+}
 
 // CredentialFeatureFlagAddJSONBody defines parameters for CredentialFeatureFlagAdd.
 type CredentialFeatureFlagAddJSONBody struct {

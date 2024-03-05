@@ -36,6 +36,7 @@ func (svc *VaultServiceImpl) VaultEdit(c context.Context, vaultPID string, vault
 	}
 	// edit the vault
 	tx := svc.DB.EditVault(vault.ID, *vault)
+	err = tx.Error
 	if err != nil {
 		tx.Rollback()
 		return api.GenericMessageResponse{}, 0, err

@@ -149,10 +149,18 @@ func (db *DB) AddCredentialToVault(credentialID int, vaultID int) *gorm.DB {
 	})
 }
 
-func (db *DB) GetCredentialsForVault(vaultID int) ([]*VaultCredentials, error) {
+func (db *DB) GetCredentialsForVault(vaultID int) ([]*Credential, error) {
 	var vaultCredentials []*VaultCredentials
 	err := db.gormDB.Where("vault_id = ?", vaultID).Find(&vaultCredentials).Error
-	return vaultCredentials, err
+	var credentials []*Credential
+	for _, vaultCredential := range vaultCredentials {
+		credential, err := db.GetCredentialByID(vaultCredential.CredentialID)
+		if err != nil {
+			return nil, err
+		}
+		credentials = append(credentials, credential)
+	}
+	return credentials, err
 }
 
 func (db *DB) GetVaultIDForCredential(credentialID int) (*VaultCredentials, error) {

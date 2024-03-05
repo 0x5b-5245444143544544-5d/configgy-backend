@@ -170,7 +170,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/VaultCreateRequest"
+                $ref: "#/components/schemas/VaultWithCredentials"
               examples:
                 success:
                   summary: Successful Vault Get Response
@@ -1199,6 +1199,48 @@ components:
         pid:
           type: string
           example: vault_a5009e28-e59e-4033-8c55-82ddc780fcae
+
+    VaultWithCredentials:
+      type: object
+      required:
+        - name
+        - public_key
+        - pid
+        - credentials
+      properties:
+        name:
+          type: string
+          example: Some Vault Name
+        description:
+          type: string
+          example: Some Vault Description
+        public_key:
+          type: string
+        pid:
+          type: string
+          example: vault_a5009e28-e59e-4033-8c55-82ddc780fcae
+        credentials:
+          type: array
+          items:
+            $ref: "#/components/schemas/CredentialStub"
+
+    CredentialStub:
+      type: object
+      required:
+        - name
+        - credential_type
+        - pid
+      properties:
+        name:
+          type: string
+          example: Some Credential Name
+        credential_type:
+          type: string
+          enum: [password, file, feature_flags]
+          example: password
+        pid:
+          type: string
+          example: credential_a5009e28-e59e-4033-8c55-82ddc780fcae
 
     CredentialCreateRequest:
       type: object

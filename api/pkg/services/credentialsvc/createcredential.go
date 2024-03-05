@@ -19,11 +19,11 @@ func (svc *CredentialServiceImpl) CredentialCreate(c context.Context, req api.Cr
 	var err error
 
 	switch req.CredentialType {
-	case api.Password:
+	case api.CredentialCreateRequestCredentialTypePassword:
 		credentialID, createActualCredentialTx, err = svc.createPasswordCredential(c, req, userPID)
-	case api.FeatureFlags:
+	case api.CredentialCreateRequestCredentialTypeFeatureFlags:
 		credentialID, createActualCredentialTx, err = svc.createFeatureFlagsCredential(c, req, userPID)
-	case api.File:
+	case api.CredentialCreateRequestCredentialTypeFile:
 		credentialID, createActualCredentialTx, err = svc.createFileCredential(c, req, userPID)
 	default:
 		return api.GenericMessageResponse{}, 0, errors.New("invalid credential type")
