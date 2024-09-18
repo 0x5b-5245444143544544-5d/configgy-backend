@@ -47,5 +47,5 @@ func Connection() (*gorm.DB, *sql.DB) {
 
 func Migrate(db *gorm.DB) {
 	log.Default().Println("Running migrations")
-	db.AutoMigrate(&pkg.User{})
+	db.AutoMigrate(&pkg.User{}, &pkg.Credential{}, &pkg.Vault{}, &pkg.Group{}, &pkg.BaseRole{}, &pkg.Permission{}, &pkg.PermissionAssignments{}, &pkg.PasswordCredential{}, &pkg.FileCredential{}, &pkg.FeatureFlagCredential{}, &pkg.Encryption{})
 }
